@@ -23,7 +23,16 @@ export async function fetchProducts(categoryId?: string): Promise<Product[]> {
       take: 100,
     });
 
-    return products.map((product) => ({
+    return products.map((product: {
+      id: number;
+      name: string;
+      price: number;
+      description: string;
+      imageUrl: string;
+      category: string | null;
+      createdAt: Date;
+      updatedAt: Date;
+    }) => ({
       id: product.id.toString(),
       name: product.name,
       price: product.price,
@@ -103,8 +112,8 @@ export async function fetchCategories(): Promise<Category[]> {
     });
 
     return categories
-      .filter((p) => p.category)
-      .map((p) => ({
+      .filter((p: { category: string | null }) => p.category)
+      .map((p: { category: string | null }) => ({
         id: p.category!.toLowerCase().replace(/\s+/g, "-"),
         name: p.category!,
       }));
