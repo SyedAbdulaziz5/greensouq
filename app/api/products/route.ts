@@ -30,7 +30,14 @@ export async function GET(request: Request) {
       take: 100,
     });
 
-    const formattedProducts = products.map((product) => ({
+    const formattedProducts = products.map((product: {
+      id: number;
+      name: string;
+      price: number;
+      description: string;
+      imageUrl: string;
+      category: string | null;
+    }) => ({
       id: product.id.toString(),
       name: product.name,
       price: product.price,
