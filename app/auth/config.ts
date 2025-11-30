@@ -5,6 +5,8 @@ import { compare } from "bcryptjs";
 
 export const runtime = "nodejs";
 
+const AUTH_SECRET = process.env.AUTH_SECRET || "rkibxM3dsw2LYlK5zIPUY4Tn2ili1P7dgaRdBVe/eU4=";
+
 export const authConfig = {
   providers: [
     Credentials({
@@ -74,6 +76,6 @@ export const authConfig = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.AUTH_SECRET || "rkibxM3dsw2LYlK5zIPUY4Tn2ili1P7dgaRdBVe/eU4=",
+  secret: AUTH_SECRET,
 } satisfies NextAuthConfig;
 
