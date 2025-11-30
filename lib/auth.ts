@@ -4,6 +4,7 @@ import { authConfig } from "@/app/auth/config";
 export const runtime = "nodejs";
 
 const AUTH_SECRET = process.env.AUTH_SECRET || "rkibxM3dsw2LYlK5zIPUY4Tn2ili1P7dgaRdBVe/eU4=";
+const NEXTAUTH_URL = process.env.NEXTAUTH_URL || "https://greensouq-one.vercel.app";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
