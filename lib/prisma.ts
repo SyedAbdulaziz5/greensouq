@@ -28,9 +28,41 @@ function getPrismaClient() {
   } as any);
 }
 
-export const prisma =
-  globalForPrisma.prisma ?? getPrismaClient();
+// Lazy initialization - only create client when actually accessed
+let _prisma: PrismaClient | undefined;
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+function getPrisma(): PrismaClient {
+  if (globalForPrisma.prisma) {
+    return globalForPrisma.prisma;
+  }
+  
+  if (_prisma) {
+    return _prisma;
+  }
+  
+  // Only initialize if DATABASE_URL is available
+  // This allows the module to be imported during build without errors
+  if (process.env.DATABASE_URL) {
+    _prisma = getPrismaClient();
+    if (process.env.NODE_ENV !== "production") {
+      globalForPrisma.prisma = _prisma;
+    }
+    return _prisma;
+  }
+  
+  // If DATABASE_URL is not set, return a proxy that throws when accessed
+  // This allows build to complete but will error at runtime if used
+  return new Proxy({} as PrismaClient, {
+    get(_target, prop) {
+      if (prop === 'then') {
+        // Handle promise-like behavior
+        return undefined;
+      }
+      throw new Error(
+        'DATABASE_URL environment variable is not set. Prisma client cannot be used.'
+      );
+    },
+  });
 }
+
+export const prisma = getPrisma();
