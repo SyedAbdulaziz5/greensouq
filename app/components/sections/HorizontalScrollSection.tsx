@@ -107,7 +107,7 @@ export default function HorizontalScrollSection({
         {title}
       </h2>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
         <button
           onClick={prev}
           disabled={index === 0 || isTransitioning}

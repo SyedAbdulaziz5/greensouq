@@ -32,7 +32,7 @@ async function ProductsList({ category }: { category?: string }) {
     }
 
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4 lg:gap-6">
         {products.map((product) => (
           <ProductCard key={product.id} {...product} />
         ))}
@@ -61,7 +61,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+    <div className="container mx-auto px-0 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
       <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-3 sm:mb-4">All Products</h1>
         

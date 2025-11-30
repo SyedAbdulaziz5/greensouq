@@ -89,7 +89,7 @@ function CategoryCircle({ category }: { category: (typeof topCategories)[0] }) {
       className="group block text-center"
     >
       <div
-        className="relative mx-auto w-40 h-40 sm:w-48 sm:h-48 md:w-52 md:h-52 lg:w-56 lg:h-56 xl:w-60 xl:h-60 2xl:w-64 2xl:h-64 rounded-full overflow-hidden transition-all duration-300
+        className="relative mx-auto w-36 h-36 sm:w-48 sm:h-48 md:w-52 md:h-52 lg:w-56 lg:h-56 xl:w-60 xl:h-60 2xl:w-64 2xl:h-64 rounded-full overflow-hidden transition-all duration-300
           group-hover:scale-100"
       >
         <Image

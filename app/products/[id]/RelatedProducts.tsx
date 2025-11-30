@@ -21,7 +21,7 @@ export default async function RelatedProducts({
     return (
       <section className="mt-12">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Related Products</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 lg:gap-6">
           {related.map((product) => (
             <ProductCard key={product.id} {...product} />
           ))}
