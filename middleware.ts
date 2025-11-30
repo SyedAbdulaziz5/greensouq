@@ -12,12 +12,12 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  // If user is not authenticated and tries to access any page (except auth pages), redirect to login
-  if (!isAuthenticated && !isAuthPage) {
-    const loginUrl = new URL("/auth/login", req.url);
-    loginUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
-    return NextResponse.redirect(loginUrl);
-  }
+  // TEMPORARILY DISABLED - Allow access without authentication
+  // if (!isAuthenticated && !isAuthPage) {
+  //   const loginUrl = new URL("/auth/login", req.url);
+  //   loginUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
+  //   return NextResponse.redirect(loginUrl);
+  // }
 
   return NextResponse.next();
 });
