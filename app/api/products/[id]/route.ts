@@ -62,7 +62,9 @@ export async function GET(request: Request, { params }: RouteParams) {
       },
     });
   } catch (error) {
-    console.error("Error fetching product:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error fetching product:", error);
+    }
     
     const errorMessage = process.env.NODE_ENV === "development"
       ? (error instanceof Error ? error.message : "Failed to fetch product")

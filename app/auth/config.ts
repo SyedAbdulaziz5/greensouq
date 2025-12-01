@@ -5,7 +5,11 @@ import { compare } from "bcryptjs";
 
 export const runtime = "nodejs";
 
-const AUTH_SECRET = process.env.AUTH_SECRET || "rkibxM3dsw2LYlK5zIPUY4Tn2ili1P7dgaRdBVe/eU4=";
+const AUTH_SECRET = process.env.AUTH_SECRET;
+
+if (!AUTH_SECRET) {
+  throw new Error("AUTH_SECRET environment variable is not set. Please configure it in your .env file.");
+}
 
 export const authConfig = {
   providers: [
@@ -46,7 +50,9 @@ export const authConfig = {
             role: user.role,
           };
         } catch (error) {
-          console.error("Authorization error:", error);
+          if (process.env.NODE_ENV === "development") {
+            console.error("Authorization error:", error);
+          }
           return null;
         }
       },
@@ -61,7 +67,7 @@ export const authConfig = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = (user as any).role;
+        token.role = user.role;
       }
       return token;
     },

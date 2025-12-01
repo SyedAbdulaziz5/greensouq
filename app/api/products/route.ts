@@ -30,14 +30,7 @@ export async function GET(request: Request) {
       take: 100,
     });
 
-    const formattedProducts = products.map((product: {
-      id: number;
-      name: string;
-      price: number;
-      description: string;
-      imageUrl: string;
-      category: string | null;
-    }) => ({
+    const formattedProducts = products.map((product) => ({
       id: product.id.toString(),
       name: product.name,
       price: product.price,
@@ -52,7 +45,9 @@ export async function GET(request: Request) {
       },
     });
   } catch (error) {
-    console.error("Error fetching products:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error fetching products:", error);
+    }
     
     const errorMessage = process.env.NODE_ENV === "development" 
       ? (error instanceof Error ? error.message : "Failed to fetch products")

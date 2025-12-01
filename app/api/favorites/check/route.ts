@@ -26,7 +26,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ favorited: [] });
     }
 
-    const favorites = await (prisma as any).favorite.findMany({
+    const favorites = await prisma.favorite.findMany({
       where: {
         userId: session.user.id,
         productId: { in: ids },
@@ -36,11 +36,13 @@ export async function GET(request: Request) {
       },
     });
 
-    const favoritedIds = favorites.map((f: any) => f.productId.toString());
+    const favoritedIds = favorites.map((f) => f.productId.toString());
 
     return NextResponse.json({ favorited: favoritedIds });
   } catch (error) {
-    console.error("Error checking favorites:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error checking favorites:", error);
+    }
     return NextResponse.json({ favorited: [] });
   }
 }

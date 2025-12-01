@@ -20,7 +20,7 @@ async function FavoritesList() {
   }
 
   try {
-    const favorites = await (prisma as any).favorite.findMany({
+    const favorites = await prisma.favorite.findMany({
       where: { userId: session.user.id },
       include: {
         product: {
@@ -37,7 +37,7 @@ async function FavoritesList() {
       orderBy: { createdAt: "desc" },
     });
 
-    const formattedFavorites = favorites.map((fav: any) => ({
+    const formattedFavorites = favorites.map((fav) => ({
       id: fav.product.id.toString(),
       name: fav.product.name,
       price: fav.product.price,
@@ -68,13 +68,15 @@ async function FavoritesList() {
 
     return (
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4 lg:gap-6">
-        {formattedFavorites.map((product: any) => (
+        {formattedFavorites.map((product) => (
           <ProductCard key={product.id} {...product} />
         ))}
       </div>
     );
   } catch (error) {
-    console.error("Error loading favorites:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error loading favorites:", error);
+    }
     return (
       <div className="text-center py-12">
         <p className="text-red-600 text-lg">

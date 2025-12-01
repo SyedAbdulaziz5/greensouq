@@ -3,7 +3,11 @@ import { authConfig } from "@/app/auth/config";
 
 export const runtime = "nodejs";
 
-const AUTH_SECRET = process.env.AUTH_SECRET || "rkibxM3dsw2LYlK5zIPUY4Tn2ili1P7dgaRdBVe/eU4=";
+const AUTH_SECRET = process.env.AUTH_SECRET;
+
+if (!AUTH_SECRET) {
+  throw new Error("AUTH_SECRET environment variable is not set. Please configure it in your .env file.");
+}
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,

@@ -23,16 +23,7 @@ export async function fetchProducts(categoryId?: string): Promise<Product[]> {
       take: 100,
     });
 
-    return products.map((product: {
-      id: number;
-      name: string;
-      price: number;
-      description: string;
-      imageUrl: string;
-      category: string | null;
-      createdAt: Date;
-      updatedAt: Date;
-    }) => ({
+    return products.map((product) => ({
       id: product.id.toString(),
       name: product.name,
       price: product.price,
@@ -43,7 +34,9 @@ export async function fetchProducts(categoryId?: string): Promise<Product[]> {
       updatedAt: product.updatedAt,
     }));
   } catch (error) {
-    console.error("Error fetching products:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error fetching products:", error);
+    }
     if (error instanceof Error) {
       throw error;
     }
@@ -91,7 +84,9 @@ export async function fetchProduct(id: string): Promise<Product | null> {
       updatedAt: product.updatedAt,
     };
   } catch (error) {
-    console.error("Error fetching product:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error fetching product:", error);
+    }
     if (error instanceof Error) {
       throw error;
     }
@@ -112,13 +107,15 @@ export async function fetchCategories(): Promise<Category[]> {
     });
 
     return categories
-      .filter((p: { category: string | null }) => p.category)
-      .map((p: { category: string | null }) => ({
+      .filter((p) => p.category !== null)
+      .map((p) => ({
         id: p.category!.toLowerCase().replace(/\s+/g, "-"),
         name: p.category!,
       }));
   } catch (error) {
-    console.error("Error fetching categories:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error fetching categories:", error);
+    }
     throw new Error("Failed to fetch categories");
   }
 }

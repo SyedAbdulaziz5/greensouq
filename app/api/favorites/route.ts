@@ -13,7 +13,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const favorites = await (prisma as any).favorite.findMany({
+    const favorites = await prisma.favorite.findMany({
       where: { userId: session.user.id },
       include: {
         product: {
@@ -30,7 +30,7 @@ export async function GET() {
       orderBy: { createdAt: "desc" },
     });
 
-    const formattedFavorites = favorites.map((fav: any) => ({
+    const formattedFavorites = favorites.map((fav) => ({
       id: fav.product.id.toString(),
       name: fav.product.name,
       price: fav.product.price,
@@ -42,7 +42,9 @@ export async function GET() {
 
     return NextResponse.json(formattedFavorites);
   } catch (error) {
-    console.error("Error fetching favorites:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error fetching favorites:", error);
+    }
     return NextResponse.json(
       { error: "Failed to fetch favorites" },
       { status: 500 }
@@ -89,7 +91,7 @@ export async function POST(request: Request) {
     }
 
     // Check if already favorited
-    const existing = await (prisma as any).favorite.findUnique({
+    const existing = await prisma.favorite.findUnique({
       where: {
         userId_productId: {
           userId: session.user.id,
@@ -105,7 +107,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const favorite = await (prisma as any).favorite.create({
+    const favorite = await prisma.favorite.create({
       data: {
         userId: session.user.id,
         productId: productIdNum,
@@ -136,7 +138,9 @@ export async function POST(request: Request) {
       },
     });
   } catch (error) {
-    console.error("Error adding favorite:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error adding favorite:", error);
+    }
     return NextResponse.json(
       { error: "Failed to add favorite" },
       { status: 500 }
@@ -171,7 +175,7 @@ export async function DELETE(request: Request) {
       );
     }
 
-    await (prisma as any).favorite.delete({
+    await prisma.favorite.delete({
       where: {
         userId_productId: {
           userId: session.user.id,
@@ -182,7 +186,9 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ message: "Product removed from favorites" });
   } catch (error) {
-    console.error("Error removing favorite:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error removing favorite:", error);
+    }
     return NextResponse.json(
       { error: "Failed to remove favorite" },
       { status: 500 }
