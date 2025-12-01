@@ -6,18 +6,19 @@ export const runtime = "nodejs";
 export default auth((req) => {
   const isAuthenticated = !!req.auth;
   const isAuthPage = req.nextUrl.pathname.startsWith("/auth");
+  const baseUrl = req.nextUrl.origin;
 
   // If user is authenticated and tries to access auth pages, redirect to home
   if (isAuthPage && isAuthenticated) {
-    return NextResponse.redirect(new URL("/", req.url));
+    return NextResponse.redirect(new URL("/", baseUrl));
   }
 
-  // TEMPORARILY DISABLED - Allow access without authentication
-  // if (!isAuthenticated && !isAuthPage) {
-  //   const loginUrl = new URL("/auth/login", req.url);
-  //   loginUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
-  //   return NextResponse.redirect(loginUrl);
-  // }
+  // Require authentication for all routes except auth pages
+  if (!isAuthenticated && !isAuthPage) {
+    const loginUrl = new URL("/auth/login", baseUrl);
+    loginUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
+    return NextResponse.redirect(loginUrl);
+  }
 
   return NextResponse.next();
 });

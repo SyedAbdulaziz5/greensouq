@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
 import { Mail, Lock, Eye, EyeOff, User, Loader2 } from "lucide-react";
 import mainIcon from "@/public/mainIcon.webp";
 
@@ -48,7 +49,21 @@ export default function SignupPage() {
         return;
       }
 
-      router.push("/auth/login?registered=true");
+      // Automatically sign in the user after successful signup
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        // If auto-login fails, redirect to login page
+        router.push("/auth/login?registered=true");
+      } else {
+        // Successfully signed in, redirect to home
+        router.push("/");
+        router.refresh();
+      }
     } catch (err) {
       setError("Something went wrong. Please try again.");
     } finally {

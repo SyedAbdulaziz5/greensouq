@@ -41,10 +41,26 @@ export async function POST(request: Request) {
         email,
         password: hashedPassword,
       },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        image: true,
+        role: true,
+      },
     });
 
     return NextResponse.json(
-      { message: "User created successfully", userId: user.id },
+      { 
+        message: "User created successfully", 
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          image: user.image,
+          role: user.role,
+        }
+      },
       { status: 201 }
     );
   } catch (error: any) {

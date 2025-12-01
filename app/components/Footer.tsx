@@ -197,7 +197,7 @@ SocialLinks.displayName = "SocialLinks";
 
 const FooterSectionComponent = memo(({ title, links }: FooterSection) => (
   <div>
-    <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3 sm:mb-5">{title}</h3>
+    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-5">{title}</h3>
     <ul className="space-y-2 sm:space-y-3">
       {links.map((link) => (
         <li key={link.href}>
@@ -273,7 +273,7 @@ export default function Footer() {
       <Newsletter />
 
       <div className="bg-gray-50 py-8 sm:py-12 lg:py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div className="container mx-auto max-w-7xl">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-12 mb-8 sm:mb-10 lg:mb-12">
             <SocialLinks />
             {FOOTER_SECTIONS.map((section) => (
