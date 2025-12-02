@@ -12,6 +12,7 @@ import {
   ChevronRight,
   Heart,
   User,
+  Music,
 } from "lucide-react";
 import Image from "next/image";
 import UserMenu from "./UserMenu";
@@ -104,12 +105,6 @@ const CATEGORIES: Category[] = [
   {
     name: "Garden Services",
     slug: "garden-services",
-    subcategories: [],
-    isButton: true,
-  },
-  {
-    name: "Plant Talk",
-    slug: "plant-talk",
     subcategories: [],
     isButton: true,
   },
@@ -480,6 +475,12 @@ export default function Header() {
                 )}
               </div>
             ))}
+            <Link
+              href="/favorites/songs"
+              className="flex items-center px-4 py-3 text-black hover:text-gray-700 cursor-pointer transition-colors whitespace-nowrap"
+            >
+              <span className="text-base font-medium">Favorites Songs</span>
+            </Link>
           </div>
         </div>
       </nav>
@@ -557,7 +558,16 @@ export default function Header() {
                 onClick={closeMobileMenu}
               >
                 <Heart className="w-5 h-5" />
-                My Favorites
+                Favorite Products
+              </Link>
+
+              <Link
+                href="/favorites/songs"
+                className="flex items-center gap-3 px-4 py-3 text-gray-900 hover:bg-gray-100 transition-colors rounded-lg"
+                onClick={closeMobileMenu}
+              >
+                <Music className="w-5 h-5" />
+                Favorite Songs
               </Link>
 
               <Link

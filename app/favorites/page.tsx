@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import ProductCard from "@/app/components/ProductCard";
 import { ProductCardSkeleton } from "@/app/components/ui/LoadingSkeleton";
@@ -16,7 +15,23 @@ async function FavoritesList() {
   const session = await auth();
 
   if (!session?.user?.id) {
-    redirect("/auth/login");
+    return (
+      <div className="text-center py-12 sm:py-16 px-4">
+        <Heart className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-4" />
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">
+          Please sign in to view your favorites
+        </h2>
+        <p className="text-sm sm:text-base text-gray-600 mb-6">
+          Sign in to save and manage your favorite products!
+        </p>
+        <a
+          href="/auth/login"
+          className="inline-block bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-sm hover:bg-green-700 transition text-sm sm:text-base"
+        >
+          Sign In
+        </a>
+      </div>
+    );
   }
 
   try {
@@ -90,10 +105,6 @@ async function FavoritesList() {
 export default async function FavoritesPage() {
   const session = await auth();
 
-  if (!session?.user?.id) {
-    redirect("/auth/login");
-  }
-
   return (
     <div className="container mx-auto px-0 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
       <div className="mb-6 sm:mb-8">
@@ -117,4 +128,3 @@ export default async function FavoritesPage() {
     </div>
   );
 }
-

@@ -13,13 +13,8 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/", baseUrl));
   }
 
-  // Require authentication for all routes except auth pages
-  if (!isAuthenticated && !isAuthPage) {
-    const loginUrl = new URL("/auth/login", baseUrl);
-    loginUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
+  // Allow all routes to be accessed without authentication
+  // Only auth pages are protected (to prevent authenticated users from accessing them)
   return NextResponse.next();
 });
 
